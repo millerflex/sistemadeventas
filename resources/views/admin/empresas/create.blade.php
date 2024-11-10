@@ -154,7 +154,7 @@
                                         <label for="moneda">Moneda</label>
                                         <select name="moneda" class="form-control">
                                             @foreach($monedas as $moneda)
-                                                <option value="{{ $moneda->symbol }}">{{ $moneda->symbol }}</option>
+                                                <option value="{{ $moneda->id }}">{{ $moneda->symbol }}</option>
                                             @endforeach
                                             
                                         </select>

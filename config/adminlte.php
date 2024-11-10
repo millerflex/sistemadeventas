@@ -332,7 +332,22 @@ return [
             'text' => 'Configuración',
             'url' => 'admin/configuracion',
             'icon' => 'fas fa-fw bi-gear-fill',
+            'classes'=>'bg-blue text-white'
         ],
+
+        [
+            'text' => 'Roles',
+            'icon' => 'fas fa-fw bi-person-check-fill',
+            'classes'=>'bg-blue text-white',
+            'submenu' => [
+                [
+                    'text' => 'Listado de roles',
+                    'url' => 'admin/roles',
+                ],
+            ],
+        ],
+
+
         [
             'text' => 'multilevel',
             'icon' => 'fas fa-fw fa-share',
@@ -482,12 +497,18 @@ return [
             ],
         ],
         'Sweetalert2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
+                    'location' => 'https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js',
+                ],
+
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => 'https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css',
                 ],
             ],
         ],
