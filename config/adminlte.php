@@ -343,49 +343,51 @@ return [
                 [
                     'text' => 'Listado de roles',
                     'url' => 'admin/roles',
+                    'classes'=>'bg-white text-black',
                 ],
             ],
         ],
-
 
         [
-            'text' => 'multilevel',
-            'icon' => 'fas fa-fw fa-share',
+            'text' => 'Usuarios',
+            'icon' => 'fas fa-fw bi bi-person-vcard',
+            'classes'=>'bg-blue text-white',
             'submenu' => [
                 [
-                    'text' => 'level_one',
-                    'url' => '#',
-                ],
-                [
-                    'text' => 'level_one',
-                    'url' => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url' => '#',
-                        ],
-                        [
-                            'text' => 'level_two',
-                            'url' => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url' => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url' => '#',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'text' => 'level_one',
-                    'url' => '#',
+                    'text' => 'Listado de usuarios',
+                    'url' => 'admin/usuarios',
+                    'classes'=>'bg-white text-black',
                 ],
             ],
         ],
+
+        [
+            'text' => 'Categorias',
+            'icon' => 'fas fa-fw bi bi-tags',
+            'classes'=>'bg-blue text-white',
+            'submenu' => [
+                [
+                    'text' => 'Listado de categorias',
+                    'url' => 'admin/categorias',
+                    'classes'=>'bg-white text-black',
+                ],
+            ],
+        ],
+
+        [
+            'text' => 'Productos',
+            'icon' => 'fas fa-fw bi bi-list',
+            'classes'=>'bg-blue text-white',
+            'submenu' => [
+                [
+                    'text' => 'Listado de productos',
+                    'url' => 'admin/productos',
+                    'classes'=>'bg-white text-black',
+                ],
+            ],
+        ],
+
+        
        /* ['header' => 'labels'],
         [
             'text' => 'important',
@@ -452,7 +454,7 @@ return [
             ]
         ],
         'Datatables' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',

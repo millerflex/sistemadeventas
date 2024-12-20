@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?php
-ini_set('memory_limit', '512M');
+ini_set('memory_limit', '512M'); //este comando me sirvió para poder usar el seed para instalar laravel Wordl
 use Symfony\Component\Console\Input\ArgvInput;
 
 define('LARAVEL_START', microtime(true));

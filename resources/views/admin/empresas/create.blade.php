@@ -109,6 +109,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="ciudad">Ciudad</label>
+
                                             <div id="respuesta_estado">
 
                                             </div>

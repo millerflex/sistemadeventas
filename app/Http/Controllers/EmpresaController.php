@@ -85,7 +85,7 @@ class EmpresaController extends Controller
         $empresa->moneda = $request->moneda;
         $empresa->direccion = $request->direccion;
         $empresa->ciudad = $request->ciudad;
-        $empresa->departamento = $request->estado;
+        $empresa->departamento = $request->departamento;
         $empresa->codigo_postal = $request->codigo_postal;
         $empresa->logo = $request->file('logo')->store('images', 'public');
 
@@ -99,6 +99,8 @@ class EmpresaController extends Controller
         $usuario->empresa_id = $empresa->id;
 
         $usuario->save();
+
+        $usuario->assignRole('ADMINISTRADOR');
 
         /*Con esta línea de código lo que hago es que al momento de registrar la empresa con el usuario por defecto no vuelva al login sino que automáticamente
         ingrese al panel principal ya logeado*/
