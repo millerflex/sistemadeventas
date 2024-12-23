@@ -387,6 +387,19 @@ return [
             ],
         ],
 
+        [
+            'text' => 'Proveedores',
+            'icon' => 'fas fa-fw bi bi-box-seam',
+            'classes'=>'bg-blue text-white',
+            'submenu' => [
+                [
+                    'text' => 'Listado de proveedores',
+                    'url' => 'admin/proveedores',
+                    'classes'=>'bg-white text-black',
+                ],
+            ],
+        ],
+
         
        /* ['header' => 'labels'],
         [

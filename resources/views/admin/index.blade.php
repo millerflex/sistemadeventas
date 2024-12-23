@@ -64,6 +64,20 @@
             <!-- /.info-box -->
         </div>
 
+        <div class="col-md-3 col-sm-6 col-12">
+            <div class="info-box">
+                <a href="{{ url('/admin/proveedores') }}" class="info-box-icon bg-danger">
+                    <span><i class="fas fa-fw bi bi-box-seam"></i></span>
+                </a>
+            <div class="info-box-content">
+                <span class="info-box-text">Proveedores registradas</span>
+                <span class="info-box-number">{{ $total_proveedores }} proveedores</span>
+            </div>
+            <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+
     </div>
     
 @stop
