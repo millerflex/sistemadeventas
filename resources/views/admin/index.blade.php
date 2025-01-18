@@ -78,6 +78,20 @@
             <!-- /.info-box -->
         </div>
 
+        <div class="col-md-3 col-sm-6 col-12">
+            <div class="info-box">
+                <a href="{{ url('/admin/compras') }}" class="info-box-icon bg-secondary">
+                    <span><i class="fas fa-fw bi bi-cart-plus"></i></span>
+                </a>
+            <div class="info-box-content">
+                <span class="info-box-text">Compras registradas</span>
+                <span class="info-box-number">{{ $total_compras }} compra</span>
+            </div>
+            <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+
     </div>
     
 @stop

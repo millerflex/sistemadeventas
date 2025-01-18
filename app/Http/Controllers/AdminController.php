@@ -7,6 +7,7 @@ use App\Models\Categoria;
 use App\Models\Producto;
 use App\Models\Proveedor;
 use App\Models\User;
+use App\Models\Compra;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
@@ -19,6 +20,7 @@ class AdminController extends Controller
         $total_categoria = Categoria::count();
         $total_productos = Producto::count();
         $total_proveedores = Proveedor::count();
+        $total_compras = Compra::count();
 
         /*Si el usuario está autenticado que me muestre el id de la empresa
         por lo contrario si no lo está que me redireccione al login.
@@ -31,6 +33,7 @@ class AdminController extends Controller
         'total_usuarios',
         'total_categoria',
         'total_productos',
-        'total_proveedores'));
+        'total_proveedores',
+        'total_compras'));
     }
 }

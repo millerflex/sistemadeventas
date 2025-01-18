@@ -400,6 +400,19 @@ return [
             ],
         ],
 
+        [
+            'text' => 'Compras',
+            'icon' => 'fas fa-fw bi bi-cart-plus',
+            'classes'=>'bg-blue text-white',
+            'submenu' => [
+                [
+                    'text' => 'Listado de compras',
+                    'url' => 'admin/compras',
+                    'classes'=>'bg-white text-black',
+                ],
+            ],
+        ],
+
         
        /* ['header' => 'labels'],
         [
