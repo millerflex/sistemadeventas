@@ -1,14 +1,14 @@
 @extends('adminlte::page')
 
 @section('content_header')
-    <h1><b>Registro de un nuevo rol</b></h1>
+    <h1><b>Datos del cliente</b></h1>
     <hr>
 @stop
 
 @section('content')
         <div class="row">
-            <div class="col-md-4">
-                <div class="card card-outline card-success">
+            <div class="col-md-8">
+                <div class="card card-outline card-info">
                     <div class="card-header">
                         <h3 class="card-title">Datos registrados</h3>
                         <!-- /.card-tools -->
@@ -18,19 +18,27 @@
                     
 
                     <div class="card-body">
-                        <form action="{{ url('/admin/roles', $rol->id) }}" method="post">
                             @csrf
-                            @method('PUT')
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="name">Nombre del rol</label>
-                                        <input type="text" name="name" value="{{ $rol->name }}" class="form-control" required>
-                                        @error('name')
-                                        <small style="color:red;"> {{ $message }} </small>
-                                    @enderror
-                                    </div>
+                                <div class="col-md-6">
+                                    <p>{{ $cliente->nombre_cliente }}</p>
                                 </div>
+
+                                <div class="col-md-6">
+                                    <p>{{ $cliente->codigo }}</p>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p>{{ $cliente->telefono }}</p>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <p>{{ $cliente->email }}</p>
+                                </div>
+
                             </div>
 
                             <hr>
@@ -38,12 +46,10 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-success"><i class="bi bi-arrow-clockwise"></i> Actualizar</button>
+                                        <a href="{{ url('/admin/clientes') }}" class="btn btn-secondary">Volver</a>
                                     </div>
                                 </div>
                             </div>
-
-                        </form>
                     </div>
                     <!-- /.card-body -->
                 </div>

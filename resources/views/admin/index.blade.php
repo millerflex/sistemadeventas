@@ -92,6 +92,20 @@
             <!-- /.info-box -->
         </div>
 
+        <div class="col-md-3 col-sm-6 col-12">
+            <div class="info-box">
+                <a href="{{ url('/admin/clientes') }}" class="info-box-icon bg-info">
+                    <span><i class="fas fa-fw bi bi-person-arms-up"></i></span>
+                </a>
+            <div class="info-box-content">
+                <span class="info-box-text">Clientes registradas</span>
+                <span class="info-box-number">{{ $total_clientes }} clientes</span>
+            </div>
+            <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+
     </div>
     
 @stop

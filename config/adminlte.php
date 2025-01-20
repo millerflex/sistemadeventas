@@ -413,6 +413,18 @@ return [
             ],
         ],
 
+        [
+            'text' => 'Clientes',
+            'icon' => 'fas fa-fw bi bi-person-arms-up',
+            'classes'=>'bg-blue text-white',
+            'submenu' => [
+                [
+                    'text' => 'Listado de clientes',
+                    'url' => 'admin/clientes',
+                    'classes'=>'bg-white text-black',
+                ],
+            ],
+        ],
         
        /* ['header' => 'labels'],
         [
