@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
 @section('content_header')
-    <h1><b>Registro de una nueva compra</b></h1>
+    <h1><b>Registro de una nueva venta</b></h1>
     <hr>
 @stop
 
@@ -18,7 +18,7 @@
                     
 
                     <div class="card-body">
-                        <form action="{{ url('/admin/compras/create') }}" id="form_compra" method="post">
+                        <form action="{{ url('/admin/ventas/create') }}" id="form_venta" method="post">
                             @csrf
 
                             <div class="row">
@@ -30,7 +30,7 @@
                                                 <div class="col-md-2">
                                                     <div class="form-group">
                                                         <label for="cantidad">Cántidad</label>
-                                                        <input type="number" id="cantidad" style="text-align: center; background-color:#f0e2c0" name="cantidad" value="1" class="form-control" required>
+                                                        <input type="number" id="cantidad" style="text-align: center; background-color:#f0e2c0" value="1" class="form-control" required>
                                                         @error('cantidad')
                                                         <small style="color:red;"> {{ $message }} </small>
                                                         @enderror
@@ -140,23 +140,23 @@
                                                     </thead>
 
                                                     <tbody>
-                                                        <?php $contador = 1; $total_cantidad = 0; $total_compra = 0; ?>
+                                                        <?php $contador = 1; $total_cantidad = 0; $total_venta = 0; ?>
                                                         
-                                                        @foreach ($tmp_compras as $tmp_compra )
+                                                        @foreach ($tmp_ventas as $tmp_venta )
                                                             <tr>
                                                                 <td style="text-align: center">{{ $contador++ }}</td>
-                                                                <td style="text-align: center">{{ $tmp_compra->producto->codigo }}</td>
-                                                                <td style="text-align: center">{{ $tmp_compra->cantidad }}</td>
-                                                                <td style="text-align: center">{{ $tmp_compra->producto->nombre }}</td>
-                                                                <td style="text-align: center">{{ $tmp_compra->producto->precio_compra }}</td>
-                                                                <td style="text-align: center">{{ $total = $tmp_compra->producto->precio_compra * $tmp_compra->cantidad }}</td>
+                                                                <td style="text-align: center">{{ $tmp_venta->producto->codigo }}</td>
+                                                                <td style="text-align: center">{{ $tmp_venta->cantidad }}</td>
+                                                                <td style="text-align: center">{{ $tmp_venta->producto->nombre }}</td>
+                                                                <td style="text-align: center">{{ $tmp_venta->producto->precio_venta }}</td>
+                                                                <td style="text-align: center">{{ $total = $tmp_venta->producto->precio_venta * $tmp_venta->cantidad }}</td>
                                                                 <td style="text-align: center">
-                                                                    <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="{{ $tmp_compra->id }}"><i class="bi bi-trash3-fill"></i></button>
+                                                                    <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="{{ $tmp_venta->id }}"><i class="bi bi-trash3-fill"></i></button>
                                                                 </td>
                                                             </tr>
                                                             @php
-                                                                $total_cantidad += $tmp_compra->cantidad;
-                                                                $total_compra += $total;
+                                                                $total_cantidad += $tmp_venta->cantidad;
+                                                                $total_venta += $total;
                                                             @endphp
                                                         @endforeach
                                                     </tbody>
@@ -167,7 +167,7 @@
                                                             <td style="text-align: center"><b>{{ $total_cantidad }}</b></td>
 
                                                             <td style="text-align: right" colspan="2"><b>Precio Total</b></td>
-                                                            <td style="text-align: center"><b>{{ $total_compra }}</b></td>
+                                                            <td style="text-align: center"><b>{{ $total_venta }}</b></td>
                                                         </tr>
                                                     </tfoot>
 
@@ -180,46 +180,44 @@
 
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#proveedorModal">Buscar proveedor</button>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#clienteModal">Buscar cliente</button>
+                                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#cliente-create-Modal"><i class="bi bi-plus-circle"></i></button>
                                                 </div>
 
-                                                <div class="col-md-6">
-                                                    <input type="text" id="nombre_proveedor" class="form-control" readonly>
-                                                    <input type="text" id="id_proveedor" class="form-control" name="proveedor_id" hidden>
-                                                </div>
-
-                                                <!-- Modal para la búsqueda de proveedores-->
-                                                <div class="modal fade" id="proveedorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <!-- Modal para la búsqueda de clientes-->
+                                                <div class="modal fade" id="clienteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog modal-lg">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Listado de proveedores</h5>
+                                                                <h5 class="modal-title" id="exampleModalLabel">Listado de clientes</h5>
                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
                                                                 <div class="modal-body">
-                                                                    <table id="table_proveedores" class="table table-striped table-hover table-sm">
+                                                                    <table id="table_clientes" class="table table-striped table-hover table-sm">
                                                                         <thead class="thead-light">
                                                                             <tr>
                                                                                 <th scope="col" style="text-align: center">Nro</th>
                                                                                 <th scope="col" style="text-align: center">Acción</th>
-                                                                                <th scope="col" style="text-align: center">Empresa</th>
+                                                                                <th scope="col" style="text-align: center">Nombre Cliente</th>
+                                                                                <th scope="col" style="text-align: center">Código</th>
                                                                                 <th scope="col" style="text-align: center">Teléfono</th>
-                                                                                <th scope="col" style="text-align: center">Nombre</th>
+                                                                                <th scope="col" style="text-align: center">Email</th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                            <?php $contador_proveedores = 1; ?>
-                                                                            @foreach ($proveedores as $proveedor)
+                                                                            <?php $contador_clientes = 1; ?>
+                                                                            @foreach ($clientes as $cliente)
                                                                                 <tr>
-                                                                                    <td style="text-align: center; vertical-align:middle">{{ $contador_proveedores++ }}</td>
+                                                                                    <td style="text-align: center; vertical-align:middle">{{ $contador_clientes++ }}</td>
                                                                                     <td style="text-align: center; vertical-align:middle">
-                                                                                        <button type="button" class="btn btn-info btn-sm btn-seleccionar-proveedor" data-id="{{ $proveedor->id }}" data-empresa="{{ $proveedor->empresa }}">Seleccionar</button>
+                                                                                        <button type="button" class="btn btn-info btn-sm btn-seleccionar-cliente" data-id="{{ $cliente->id }}" data-codigo="{{ $cliente->codigo }}" data-nombrecliente="{{ $cliente->nombre_cliente }}">Seleccionar</button>
                                                                                     </td>
-                                                                                    <td style="text-align: center; vertical-align:middle">{{ $proveedor->empresa }}</td>
-                                                                                    <td style="text-align: center; vertical-align:middle">{{ $proveedor->telefono }}</td>
-                                                                                    <td style="text-align: center; vertical-align:middle">{{ $proveedor->nombre }}</td>
+                                                                                    <td style="text-align: center; vertical-align:middle">{{ $cliente->nombre_cliente }}</td>
+                                                                                    <td style="text-align: center; vertical-align:middle">{{ $cliente->codigo }}</td>
+                                                                                    <td style="text-align: center; vertical-align:middle">{{ $cliente->telefono }}</td>
+                                                                                    <td style="text-align: center; vertical-align:middle">{{ $cliente->email }}</td>
                                                                                 </tr>
                                                                             @endforeach
                                                                             
@@ -233,42 +231,111 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!---Modal para la búsqueda de proveedores--->
+                                                <!---Modal para la búsqueda de clientes--->
 
-                                                <div class="col-md-6">
-
+                                                <!-- Modal para crear clientes-->
+                                                <div class="modal fade" id="cliente-create-Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Registrar nuevo cliente</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                                <div class="modal-body">
+                                                                        <div class="row">
+                                                                            <div class="col-md-6">
+                                                                                <div class="form-group">
+                                                                                    <label for="nombre_cliente">Nombre del cliente</label>
+                                                                                    <input type="text" id="nombre" value="{{ old('nombre_cliente') }}" class="form-control">
+                                                                                    @error('nombre_cliente')
+                                                                                    <small style="color:red;"> {{ $message }} </small>
+                                                                                @enderror
+                                                                                </div>
+                                                                            </div>
+                                            
+                                                                            <div class="col-md-6">
+                                                                                <div class="form-group">
+                                                                                    <label for="codigo">Código del cliente</label>
+                                                                                    <input type="text" id="cod" value="{{ old('codigo') }}" class="form-control">
+                                                                                    @error('codigo')
+                                                                                    <small style="color:red;"> {{ $message }} </small>
+                                                                                @enderror
+                                                                                </div>
+                                                                            </div>
+                                            
+                                                                        </div>
+                                            
+                                                                        <div class="row">
+                                                                            <div class="col-md-6">
+                                                                                <div class="form-group">
+                                                                                    <label for="telefono">Teléfono</label>
+                                                                                    <input type="text" id="telefono" value="{{ old('telefono') }}" class="form-control">
+                                                                                    @error('telefono')
+                                                                                    <small style="color:red;"> {{ $message }} </small>
+                                                                                @enderror
+                                                                                </div>
+                                                                            </div>
+                                            
+                                                                            <div class="col-md-6">
+                                                                                <div class="form-group">
+                                                                                    <label for="email">Correo</label>
+                                                                                    <input type="email" id="email" value="{{ old('email') }}" class="form-control">
+                                                                                    @error('email')
+                                                                                    <small style="color:red;"> {{ $message }} </small>
+                                                                                @enderror
+                                                                                </div>
+                                                                            </div>
+                                            
+                                                                        </div>
+                                            
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" onclick="guardar_cliente()" class="btn btn-primary"><i class="bi bi-save"></i> Registrar</button>
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                                </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
+                                                <!---Modal para crear clietes--->
+
                                             </div>
+
                                             <hr>
                                             <div class="row">
                                                 <div class="col-md-6">
+                                                    <label for="">Nombre del cliente</label>
+                                                    <input type="text" id="nombre_cliente_select" class="form-control" value="S/N">
+                                                    <input type="text" id="id_cliente" class="form-control" name="cliente_id" hidden>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label for="">Código del cliente</label>
+                                                    <input type="text" id="codigo_cliente_select" class="form-control" value="0">
+                                                </div>
+                                            </div>
+
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="fecha">Fecha</label>
-                                                        <input type="date" name="fecha_compra" value="{{ old('fecha') }}" class="form-control">
+                                                        <label for="fecha">Fecha de venta</label>
+                                                        <input type="date" name="fecha_venta" value="{{ old('fecha', date('Y-m-d')) }}" class="form-control">
                                                         @error('fecha')
                                                         <small style="color:red;"> {{ $message }} </small>
                                                         @enderror
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="comprobante">Comprobante</label>
-                                                        <input type="text" name="comprobante" value="{{ old('comprobante') }}" class="form-control">
-                                                        @error('comprobante')
-                                                        <small style="color:red;"> {{ $message }} </small>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-
                                             </div>
 
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="precio_total">Costo Total</label>
-                                                        <input type="text" style="text-align: center; color:rgb(0, 0, 0); background-color:bisque" name="precio_total" value="{{ $total_compra }}" class="form-control" readonly>
-                                                        @error('precio_total')
+                                                        <label for="total_venta">Costo Total</label>
+                                                        <input type="text" style="text-align: center; color:rgb(0, 0, 0); background-color:bisque" name="precio_total" value="{{ $total_venta }}" class="form-control" readonly>
+                                                        @error('total_venta')
                                                         <small style="color:red;"> {{ $message }} </small>
                                                         @enderror
                                                     </div>
@@ -281,7 +348,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <button type="submit" class="btn btn-primary btn-block"><i class="bi bi-save"></i> Registrar compra</button>
+                                                        <button type="submit" class="btn btn-primary btn-block"><i class="bi bi-save"></i> Registrar venta</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -311,22 +378,62 @@
 @section('js')
     
         <script>
+            
+        //Script para registrar a un cliente cuando hace una compra por primera vez desde el formulario de ventas
+        function guardar_cliente(){
 
-            //Función para que al apretar el botón "seleccionar" se ingrese el nombre del proveedor dentro del input
-            $('.btn-seleccionar-proveedor').click(function(){
-                var id_proveedor = $(this).data('id')
-                var empresa = $(this).data('empresa')
-                $('#nombre_proveedor').val(empresa)
-                $('#id_proveedor').val(id_proveedor)
-                $('#proveedorModal').modal('hide');
-                $('#proveedorModal').on('hidden.bs.modal', function(){
-                    $('#nombre_proveedor').focus()
-                });
+            var nombre_cliente = $('#nombre').val()
+            var codigo = $('#cod').val()
+            var telefono = $('#telefono').val()
+            var email = $('#email').val()
+
+            $.ajax({
+                url: '{{ route("admin.ventas.cliente.store") }}',
+                method: 'POST',
+                data:{
+                    _token: '{{ csrf_token() }}',
+                    nombre_cliente: nombre_cliente,
+                    codigo: codigo,
+                    telefono: telefono,
+                    email: email
+                },
+                success: function(response){
+                    if(response.success){
+                                    Swal.fire({
+                                    position: "top-end",
+                                    icon: "success",
+                                    title: "Cliente registrado correctamente",
+                                    showConfirmButton: false,
+                                    timer: 6000
+                                    });
+
+                                    location.reload(); //La página se va a refrescar automáticamente al registrarse el producto
+
+                                }
+                },
+                error: function(xhr, status, error){
+                    console.log(xhr.responseJSON);
+                    alert('No se pudo agregar al cliente' + xhr.responseJSON.message)
+                }
+            })
+        } 
+
+            //Función para que al apretar el botón "seleccionar" se ingrese el nombre del cliente dentro del input
+            $('.btn-seleccionar-cliente').click(function(){
+                var id_cliente = $(this).data('id')
+                var nombre_cliente = $(this).data('nombrecliente')
+                var codigo = $(this).data('codigo')
+
+                $('#nombre_cliente_select').val(nombre_cliente)
+                $('#codigo_cliente_select').val(codigo)
+                $('#id_cliente').val(id_cliente)
+                $('#clienteModal').modal('hide');
                 
-                //alert(id_proveedor)
+                // alert(nombre_cliente)
 
             })
-            //Función para que al apretar el botón "seleccionar" se ingrese el nombre del proveedor dentro del input
+            //Función para que al apretar el botón "seleccionar" se ingrese el nombre del cliente dentro del input
+            
 
             //Función para que al apretar el botón "seleccionar" el código del producto se pase al input "código"
             $('.btn-seleccionar').click(function(){
@@ -347,7 +454,7 @@
 
                 if(id){
                     $.ajax({
-                            url: "{{ url('/admin/compras/create/tmp') }}/"+id,
+                            url: "{{ url('/admin/ventas/create/tmp') }}/"+id,
                             type: 'POST',
                             data:{
                                 _token:'{{ csrf_token() }}',
@@ -387,15 +494,13 @@
 
             $('#codigo').focus() //Para que el cursor esté automáticamente dentro del INPUT del código
 
-
             //Script para que al presionar la tecla ENTER no se habilite el envío del formulario
-            $('#form_compra').on('keypress', function(e){
+            $('#form_venta').on('keypress', function(e){
                 if(e.keyCode === 13){
                     e.preventDefault()
                 }
             })
             //Script para que al presionar la tecla ENTER no se habilite el envío del formulario
-            
 
             //Script para que al ingresar el código del producto, este se cargue de forma automática en la tabla
             $('#codigo').on('keyup', function(e){
@@ -408,7 +513,7 @@
                 
                     if(codigo.length > 0){
                         $.ajax({
-                            url: "{{ route('admin.compras.tmp_compras') }}",
+                            url: "{{ route('admin.ventas.tmp_ventas') }}",
                             method: 'POST',
                             data:{
                                 _token:'{{ csrf_token() }}',
@@ -431,7 +536,7 @@
                                     Swal.fire({
                                     position: "top-end",
                                     icon: "error",
-                                    title: "El producto no encontrado en la base de datos",
+                                    title: "Producto no encontrado en la base de datos",
                                     showConfirmButton: false,
                                     timer: 4000
                                     });
@@ -446,6 +551,7 @@
                 }
             
             })
+
         </script>
 
 <script>
@@ -472,16 +578,16 @@
                                 },
                     })
 
-                    $('#table_proveedores').DataTable({
+                    $('#table_clientes').DataTable({
                         "pageLength": 5,
                                 "language": {
                                     "emptyTable": "No hay información",
-                                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Proveedores",
-                                    "infoEmpty": "Mostrando 0 a 0 de 0 Proveedores",
-                                    "infoFiltered": "(Filtrado de _MAX_ total Proveedores)",
+                                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Clientes",
+                                    "infoEmpty": "Mostrando 0 a 0 de 0 Clientes",
+                                    "infoFiltered": "(Filtrado de _MAX_ total Clientes)",
                                     "infoPostFix": "",
                                     "thousands": ",",
-                                    "lengthMenu": "Mostrar _MENU_ Proveedores",
+                                    "lengthMenu": "Mostrar _MENU_ Clientes",
                                     "loadingRecords": "Cargando...",
                                     "processing": "Procesando...",
                                     "search": "Buscador:",

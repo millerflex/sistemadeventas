@@ -44,6 +44,9 @@ class DetalleCompraController extends Controller
                 $detalle_compra_existe->cantidad += $request->cantidad; 
                 $detalle_compra_existe->save();
 
+                $producto->stock += $request->cantidad;
+                $producto->save();
+
                 return response()->json([
                 'success'=>true, 'message'=>'El producto fue encontrado'
             ]);
@@ -56,6 +59,10 @@ class DetalleCompraController extends Controller
 
                 $detalle_compras->compra_id = $id_compra;
                 $detalle_compras->save();
+
+                $producto->stock -= $request->cantidad;
+                $producto->save();
+                
                 return response()->json([
                     'success'=>true, 'message'=>'El producto fue encontrado'
                 ]);
@@ -97,17 +104,27 @@ class DetalleCompraController extends Controller
      */
     public function destroy($id)
     {
-        try {
-            detalleCompra::destroy($id);
-            return response()->json([
-                'success' => true,
-                'message' => 'Producto eliminado correctamente'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error al eliminar el producto'
-            ], 500);
-        }
+        // try {
+        //     detalleCompra::destroy($id);
+        //     return response()->json([
+        //         'success' => true,
+        //         'message' => 'Producto eliminado correctamente'
+        //     ]);
+        // } catch (\Exception $e) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Error al eliminar el producto'
+        //     ], 500);
+        // }
+
+        $detalleCompra = detalleCompra::find($id);
+        $producto = Producto::find($detalleCompra->producto_id);
+
+        $producto->stock += $detalleCompra->cantidad;
+        $producto->save();
+        
+        detalleCompra::destroy($id);
+
+        return response()->json(['success'=>true]);
     }
 }

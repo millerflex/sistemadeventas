@@ -425,6 +425,19 @@ return [
                 ],
             ],
         ],
+
+        [
+            'text' => 'Ventas',
+            'icon' => 'fas fa-fw bi bi-cash-stack',
+            'classes'=>'bg-blue text-white',
+            'submenu' => [
+                [
+                    'text' => 'Listado de ventas',
+                    'url' => 'admin/ventas',
+                    'classes'=>'bg-white text-black',
+                ],
+            ],
+        ],
         
        /* ['header' => 'labels'],
         [

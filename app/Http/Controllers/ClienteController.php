@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class ClienteController extends Controller
@@ -44,6 +45,7 @@ class ClienteController extends Controller
         $cliente->codigo = $request->codigo;
         $cliente->telefono = $request->telefono;
         $cliente->email = $request->email;
+        $cliente->empresa_id = Auth::user()->empresa_id;
 
         $cliente->save();
 
@@ -90,6 +92,7 @@ class ClienteController extends Controller
         $cliente->codigo = $request->codigo;
         $cliente->telefono = $request->telefono;
         $cliente->email = $request->email;
+        $cliente->empresa_id = Auth::user()->empresa_id;
 
         $cliente->save();
 
