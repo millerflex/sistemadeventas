@@ -7,6 +7,8 @@ use App\Models\Producto;
 use App\Models\Proveedor;
 use App\Models\TmpCompra;
 use App\Models\detalleCompra;
+use App\Models\MovimientoCaja;
+use App\Models\Arqueo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,8 +19,9 @@ class CompraController extends Controller
      */
     public function index()
     {
+        $arqueoAbierto = Arqueo::whereNull('fecha_cierre')->first();
         $compras = Compra::with('detalles')->get();
-        return view('admin.compras.index', compact('compras'));
+        return view('admin.compras.index', compact('compras', 'arqueoAbierto'));
     }
 
     /**
@@ -54,6 +57,18 @@ class CompraController extends Controller
         $compra->proveedor_id = $request->proveedor_id;
 
         $compra->save();
+
+        /*Registrar en el arqueo*/
+        $arqueo_id = Arqueo::whereNull('fecha_cierre')->first();
+        $movimiento = new MovimientoCaja();
+        
+        $movimiento->tipo = "EGRESO";
+        $movimiento->monto = $request->precio_total;
+        $movimiento->descripcion = "Compra de productos";
+        $movimiento->arqueo_id = $arqueo_id->id;
+
+        $movimiento->save();
+        /*Registrar en el arqueo*/
 
         $session_id = session()->getId(); //Creo una variable de session_id porque como es del mismo equipo lo va a almacenar
         $tmp_compras = TmpCompra::where('session_id', $session_id)->get();

@@ -438,6 +438,19 @@ return [
                 ],
             ],
         ],
+
+        [
+            'text' => 'Arqueo de caja',
+            'icon' => 'fas fa-fw bi bi-file-spreadsheet',
+            'classes'=>'bg-blue text-white',
+            'submenu' => [
+                [
+                    'text' => 'Listado de arqueos',
+                    'url' => 'admin/arqueos',
+                    'classes'=>'bg-white text-black',
+                ],
+            ],
+        ],
         
        /* ['header' => 'labels'],
         [

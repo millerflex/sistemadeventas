@@ -15,7 +15,12 @@
                         <!-- /.card-tools -->
 
                         <div class="card-tools">
+                            @if ($arqueoAbierto)
                             <a href="{{ url('/admin/ventas/create') }}" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle"></i> Cargar venta</a>
+                            @else
+                            <a href="{{ url('/admin/arqueos/create') }}" class="btn btn-danger btn-sm"><i class="bi bi-plus-circle"></i> Abrir caja</a>
+                            @endif
+
                         </div>
 
                     </div>
