@@ -9,6 +9,8 @@ use App\Models\TmpCompra;
 use App\Models\detalleCompra;
 use App\Models\MovimientoCaja;
 use App\Models\Arqueo;
+use App\Models\Empresa;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -166,5 +168,15 @@ class CompraController extends Controller
         return redirect()->route('admin.compras.index')
         ->with('mensaje', 'Se eliminó la compra de manera correcta')
         ->with('icono', 'success');
+    }
+
+    public function reporte(){
+
+        $empresa = Empresa::where('id', Auth::user()->empresa_id)->first();
+
+        $compras = Compra::all();
+
+        $pdf = PDF::loadView('admin.compras.reporte', compact('empresa', 'compras'));
+        return $pdf->stream();
     }
 }

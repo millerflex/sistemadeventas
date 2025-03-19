@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categoria;
+use App\Models\Empresa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CategoriaController extends Controller
 {
@@ -103,5 +105,15 @@ class CategoriaController extends Controller
         return redirect()->route('admin.categorias.index')
         ->with('mensaje', 'Registro eliminado correctamente de la base de datos')
         ->with('icono', 'success');
+    }
+
+    public function reporte(){
+
+        $empresa = Empresa::where('id', Auth::user()->empresa_id)->first();
+
+        $categorias = Categoria::all();
+
+        $pdf = PDF::loadView('admin.categorias.reporte', compact('empresa', 'categorias'));
+        return $pdf->stream();
     }
 }

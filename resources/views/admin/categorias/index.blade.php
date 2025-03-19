@@ -15,6 +15,7 @@
                         <!-- /.card-tools -->
 
                         <div class="card-tools">
+                            <a href="{{ url('/admin/categorias/reporte') }}" class="btn btn-danger btn-sm" target="blank"><i class="bi bi-filetype-pdf"></i> Reporte</a>
                             <a href="{{ url('/admin/categorias/create') }}" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle"></i> Crear Categoría</a>
                         </div>
 

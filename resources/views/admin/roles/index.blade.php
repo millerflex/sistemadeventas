@@ -15,6 +15,7 @@
                         <!-- /.card-tools -->
 
                         <div class="card-tools">
+                            <a href="{{ url('/admin/roles/reporte') }}" class="btn btn-danger btn-sm" target="blank"><i class="bi bi-filetype-pdf"></i> Reporte</a>
                             <a href="{{ url('/admin/roles/create') }}" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle"></i> Crear Rol</a>
                         </div>
 
@@ -41,6 +42,7 @@
                                             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
                                                 <a href="{{ url('/admin/roles/show', $rol->id )}}" class="btn btn-info btn-sm"><i class="bi bi-eye-fill"></i></a>
                                                 <a href="{{ url('/admin/roles/'. $rol->id .'/edit') }}" class="btn btn-success btn-sm"><i class="bi bi-pencil-fill"></i></a>
+                                                <a href="{{ url('/admin/roles/'. $rol->id .'/asignar') }}" class="btn btn-warning btn-sm"><i class="bi bi-person-fill-lock"></i></a>
 
                                                 <form action="{{ url('/admin/roles', $rol->id) }}" method="post" onclick="preguntar{{ $rol->id }} (event)"
                                                                 id="miFormulario{{ $rol->id }}">

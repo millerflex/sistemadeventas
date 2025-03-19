@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Empresa;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 use Illuminate\Support\Facades\Hash;
 
@@ -127,5 +129,15 @@ class UsuarioController extends Controller
             return redirect()->route('admin.usuarios.index')
             ->with('mensaje', 'Se eliminó al usuario de forma correcta')
             ->with('icono', 'success');
+    }
+
+    public function reporte(){
+
+        $empresa = Empresa::where('id', Auth::user()->empresa_id)->first();
+
+        $usuarios = User::all();
+
+        $pdf = PDF::loadView('admin.usuarios.reporte', compact('empresa', 'usuarios'));
+        return $pdf->stream();
     }
 }

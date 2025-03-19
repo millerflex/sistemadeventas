@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Models\Empresa;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ClienteController extends Controller
 {
@@ -110,5 +112,15 @@ class ClienteController extends Controller
         return redirect()->route('admin.clientes.index')
         ->with('mensaje', 'Se eliminó el registro de manera correcta')
         ->with('icono', 'success');
+    }
+
+    public function reporte(){
+
+        $empresa = Empresa::where('id', Auth::user()->empresa_id)->first();
+
+        $clientes = Cliente::all();
+
+        $pdf = PDF::loadView('admin.clientes.reporte', compact('empresa', 'clientes'));
+        return $pdf->stream();
     }
 }

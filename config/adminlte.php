@@ -349,6 +349,19 @@ return [
         ],
 
         [
+            'text' => 'Permisos',
+            'icon' => 'fas fa-fw bi-person-fill-lock',
+            'classes'=>'bg-blue text-white',
+            'submenu' => [
+                [
+                    'text' => 'Listado de permisos',
+                    'url' => 'admin/permisos',
+                    'classes'=>'bg-white text-black',
+                ],
+            ],
+        ],
+
+        [
             'text' => 'Usuarios',
             'icon' => 'fas fa-fw bi bi-person-vcard',
             'classes'=>'bg-blue text-white',

@@ -6,6 +6,7 @@ use App\Models\Proveedor;
 use App\Models\Empresa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ProveedorController extends Controller
 {
@@ -122,5 +123,16 @@ class ProveedorController extends Controller
         return redirect()->route('admin.proveedores.index')
         ->with('mensaje', 'Se eliminó el proveedor de manera correcta')
         ->with('icono', 'success');
+    }
+
+    public function reporte(){
+
+        $empresa = Empresa::where('id', Auth::user()->empresa_id)->first();
+
+        $proveedores = Proveedor::all();
+
+        $pdf = PDF::loadView('admin.proveedores.reporte', compact('empresa', 'proveedores'))
+                    ->setPaper('letter', 'LandScape');
+        return $pdf->stream();
     }
 }

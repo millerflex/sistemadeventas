@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Producto;
 use App\Models\Categoria;
+use App\Models\Empresa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ProductoController extends Controller
 {
@@ -151,5 +153,16 @@ class ProductoController extends Controller
         return redirect()->route('admin.productos.index')
         ->with('mensaje', 'Registro eliminado correctamente de la base de datos')
         ->with('icono', 'success');
+    }
+
+    public function reporte(){
+
+        $empresa = Empresa::where('id', Auth::user()->empresa_id)->first();
+
+        $productos = Producto::all();
+
+        $pdf = PDF::loadView('admin.productos.reporte', compact('empresa', 'productos'))
+                    ->setPaper('letter', 'LandScape');
+        return $pdf->stream();
     }
 }
