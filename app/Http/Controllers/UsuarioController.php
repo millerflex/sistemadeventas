@@ -30,7 +30,7 @@ class UsuarioController extends Controller
      */
     public function create()
     {
-        $roles = Role::all();
+        $roles = Role::where('empresa_id', Auth::user()->empresa_id)->get();
         return view('admin.usuarios.create', compact('roles'));
     }
 
@@ -135,7 +135,7 @@ class UsuarioController extends Controller
 
         $empresa = Empresa::where('id', Auth::user()->empresa_id)->first();
 
-        $usuarios = User::all();
+        $usuarios = User::where('empresa_id', Auth::user()->empresa_id)->get();
 
         $pdf = PDF::loadView('admin.usuarios.reporte', compact('empresa', 'usuarios'));
         return $pdf->stream();

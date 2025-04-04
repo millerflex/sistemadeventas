@@ -17,8 +17,12 @@ class ArqueoController extends Controller
     public function index()
     {
 
-        $arqueoAbierto = Arqueo::whereNull('fecha_cierre')->first();
-        $arqueos = Arqueo::with('movimientos')->get();
+        $arqueoAbierto = Arqueo::whereNull('fecha_cierre')
+        ->where('empresa_id', Auth::user()->empresa_id)
+        ->first();
+        $arqueos = Arqueo::with('movimientos')
+        ->where('empresa_id', Auth::user()->empresa_id)
+        ->get();
 
         //De arqueo entro a la tabla movimientos y sumo todos los montos que se registran tanto para el EGRESO como para el INGRESO. 'TIPO' y 'MONTO'
         //son los campos de la tabla movimiento_caja y 'MOVIMIENTOS'es el nombre que tiene la relación que habíamos creado en el modelo Arqueo.
@@ -167,7 +171,9 @@ class ArqueoController extends Controller
     public function reporte(){
         $empresa = Empresa::where('id', Auth::user()->empresa_id)->first();
 
-        $arqueos = Arqueo::with('movimientos')->get();
+        $arqueos = Arqueo::with('movimientos')
+        ->where('empresa_id', Auth::user()->empresa_id)
+        ->get();
 
         foreach($arqueos as $arqueo){
             $arqueo->total_ingresos = $arqueo->movimientos->where('tipo', 'INGRESO')->sum('monto');

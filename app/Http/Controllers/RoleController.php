@@ -16,7 +16,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::all();
+        $roles = Role::where('empresa_id', Auth::user()->empresa_id)->get();
         return view('admin.roles.index', compact('roles'));
     }
 
@@ -36,16 +36,12 @@ class RoleController extends Controller
         // $datos = request()->all();
         // return response()->json($datos);
 
-        $request->validate([
-            'name'=>'required|unique:roles',
-        ]);
-
         //Creo una nueva instanciación del modelo Empresas
         $roles = new Role();
 
         $roles->name = $request->name;
         $roles->guard_name = "web";
-        
+        $roles->empresa_id = Auth::user()->empresa_id;
 
         $roles->save();
 
@@ -109,7 +105,7 @@ class RoleController extends Controller
     public function reporte(){
 
         $empresa = Empresa::where('id', Auth::user()->empresa_id)->first();
-        $roles = Role::all();
+        $roles = Role::where('empresa_id', Auth::user()->empresa_id)->get();
         $pdf = PDF::loadView('admin.roles.reporte', compact('roles', 'empresa'));
         return $pdf->stream();
     }

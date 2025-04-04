@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\TmpCompra;
 use App\Models\Producto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TmpCompraController extends Controller
 {
     public function tmp_compras(Request $request){
 
-        $producto = Producto::where('codigo', $request->codigo)->first();
+        $producto = Producto::where('codigo', $request->codigo)
+        ->where('empresa_id', Auth::user()->empresa_id)
+        ->first();
         $session_id = session()->getId();
 
         if($producto){

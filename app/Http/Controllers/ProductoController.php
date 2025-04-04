@@ -18,7 +18,7 @@ class ProductoController extends Controller
     public function index()
     {
         //Que me traiga todos los productos que estén relacionados con la tabla categorías
-        $productos = Producto::with('categoria')->get(); 
+        $productos = Producto::where('empresa_id', Auth::user()->empresa_id)->get(); 
         return view('admin.productos.index', compact('productos'));
     }
 
@@ -27,7 +27,7 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        $categorias = Categoria::all();
+        $categorias = Categoria::where('empresa_id', Auth::user()->empresa_id)->get();
         return view('admin.productos.create', compact('categorias'));
     }
 
@@ -91,7 +91,7 @@ class ProductoController extends Controller
     public function edit($id)
     {
         $producto = Producto::find($id);
-        $categorias = Categoria::all();
+        $categorias = Categoria::where('empresa_id', Auth::user()->empresa_id)->get();
         return view('admin.productos.edit', compact('producto', 'categorias'));
     }
 
@@ -159,7 +159,7 @@ class ProductoController extends Controller
 
         $empresa = Empresa::where('id', Auth::user()->empresa_id)->first();
 
-        $productos = Producto::all();
+        $productos = Producto::where('empresa_id', Auth::user()->empresa_id)->get();
 
         $pdf = PDF::loadView('admin.productos.reporte', compact('empresa', 'productos'))
                     ->setPaper('letter', 'LandScape');

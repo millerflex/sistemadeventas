@@ -434,7 +434,7 @@
                                     Swal.fire({
                                     position: "top-end",
                                     icon: "error",
-                                    title: "El producto no encontrado en la base de datos",
+                                    title: "Producto no encontrado en la base de datos",
                                     showConfirmButton: false,
                                     timer: 4000
                                     });

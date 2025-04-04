@@ -47,33 +47,35 @@
                                             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
                                                 <a href="{{ url('/admin/usuarios/show', $usuario->id )}}" class="btn btn-info btn-sm"><i class="bi bi-eye-fill"></i></a>
                                                 <a href="{{ url('/admin/usuarios/'. $usuario->id .'/edit') }}" class="btn btn-success btn-sm"><i class="bi bi-pencil-fill"></i></a>
-
-                                                <form action="{{ url('/admin/usuarios', $usuario->id) }}" method="post" onclick="preguntar{{ $usuario->id }} (event)"
-                                                                id="miFormulario{{ $usuario->id }}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm" style="border-radius: 0px 3px 3px 0px"><i class="bi bi-trash3-fill"></i></button>
-                                                </form>
-                                                <script>
-                                                    function preguntar{{ $usuario->id }} (event){
-                                                        event.preventDefault()
-                                                        Swal.fire({
-                                                        title: "¿Estás seguro de eliminar este registro de la base de datos?",
-                                                        icon: "question",
-                                                        showDenyButton: true,
-                                                        showCancelButton: false,
-                                                        confirmButtonText: "Eliminar",
-                                                        denyButtonText: `No eliminar`
-                                                        }).then((result) => {
-                                                        /* Read more about isConfirmed, isDenied below */
-                                                        if (result.isConfirmed) {
-                                                            var form = $('#miFormulario{{ $usuario->id }}')
-                                                            form.submit()
-                                                        }
-                                                        });
-                                                    }
-                                                    
-                                                </script>
+                                                @if ($usuario->name !== 'Admin')
+                                                    <form action="{{ url('/admin/usuarios', $usuario->id) }}" method="post" onclick="preguntar{{ $usuario->id }} (event)"
+                                                                        id="miFormulario{{ $usuario->id }}">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger btn-sm" style="border-radius: 0px 3px 3px 0px"><i class="bi bi-trash3-fill"></i></button>
+                                                        </form>
+                                                        <script>
+                                                            function preguntar{{ $usuario->id }} (event){
+                                                                event.preventDefault()
+                                                                Swal.fire({
+                                                                title: "¿Estás seguro de eliminar este registro de la base de datos?",
+                                                                icon: "question",
+                                                                showDenyButton: true,
+                                                                showCancelButton: false,
+                                                                confirmButtonText: "Eliminar",
+                                                                denyButtonText: `No eliminar`
+                                                                }).then((result) => {
+                                                                /* Read more about isConfirmed, isDenied below */
+                                                                if (result.isConfirmed) {
+                                                                    var form = $('#miFormulario{{ $usuario->id }}')
+                                                                    form.submit()
+                                                                }
+                                                                });
+                                                            }
+                                                            
+                                                        </script>
+                                                @endif
+                                                
 
                                             </div>
                                         </td>

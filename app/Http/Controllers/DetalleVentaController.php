@@ -29,7 +29,9 @@ class DetalleVentaController extends Controller
      */
     public function store(Request $request)
     {
-        $producto = Producto::where('codigo', $request->codigo)->first();
+        $producto = Producto::where('codigo', $request->codigo)
+        ->where('empresa_id', Auth::user()->empresa_id)
+        ->first();
         $id_venta = $request->id_venta;
 
         if($producto){

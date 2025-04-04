@@ -15,8 +15,8 @@
         class="brand-link logo-switch {{ config('adminlte.classes_brand') }}"
     @endif>
 
-    {{-- Small brand logo --}}
-    <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}"
+    {{-- Small brand logo. Si el logo no existe en la base de datos que tome la imagen que tiene por defecto --}}
+    <img src="{{ asset('storage/'.$empresa->logo) ?? 'vendor/adminlte/dist/img/AdminLTELogo.png' }}"
          alt="{{ config('adminlte.logo_img_alt', 'AdminLTE') }}"
          class="{{ config('adminlte.logo_img_class', 'brand-image-xl') }} logo-xs">
 

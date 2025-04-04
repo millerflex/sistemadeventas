@@ -15,7 +15,7 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-        $categorias = Categoria::all();
+        $categorias = Categoria::where('empresa_id', Auth::user()->empresa_id)->get();
         return view('admin.categorias.index', compact('categorias'));
     }
 
@@ -111,7 +111,7 @@ class CategoriaController extends Controller
 
         $empresa = Empresa::where('id', Auth::user()->empresa_id)->first();
 
-        $categorias = Categoria::all();
+        $categorias = Categoria::where('empresa_id', Auth::user()->empresa_id)->get();
 
         $pdf = PDF::loadView('admin.categorias.reporte', compact('empresa', 'categorias'));
         return $pdf->stream();

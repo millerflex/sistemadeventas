@@ -15,7 +15,7 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        $clientes = Cliente::all();
+        $clientes = Cliente::where('empresa_id', Auth::user()->empresa_id)->get();
         return view('admin.clientes.index', compact('clientes'));
     }
 
@@ -118,7 +118,7 @@ class ClienteController extends Controller
 
         $empresa = Empresa::where('id', Auth::user()->empresa_id)->first();
 
-        $clientes = Cliente::all();
+        $clientes = Cliente::where('empresa_id', Auth::user()->empresa_id)->get();
 
         $pdf = PDF::loadView('admin.clientes.reporte', compact('empresa', 'clientes'));
         return $pdf->stream();

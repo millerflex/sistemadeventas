@@ -36,7 +36,12 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="name">Nombre del ususario</label>
-                                        <input type="text" name="name" value="{{ $usuario->name }}" class="form-control" required>
+                                        @if ($usuario->name == 'Admin')
+                                            <input type="text" value="{{ $usuario->name }}" class="form-control" disabled>
+                                            <input type="text" name="name" value="{{ $usuario->name }}" class="form-control" hidden>
+                                        @else
+                                            <input type="text" name="name" value="{{ $usuario->name }}" class="form-control" required>
+                                        @endif
                                         @error('name')
                                         <small style="color:red;"> {{ $message }} </small>
                                         @enderror

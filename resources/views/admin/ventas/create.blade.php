@@ -536,7 +536,7 @@
                                     Swal.fire({
                                     position: "top-end",
                                     icon: "error",
-                                    title: "Producto no encontrado en la base de datos",
+                                    title: response.message,
                                     showConfirmButton: false,
                                     timer: 4000
                                     });
@@ -544,7 +544,7 @@
                             },
 
                             error:function(error){
-                                alert (error)
+                                alert (response.message + error)
                             }
                         })
                     }

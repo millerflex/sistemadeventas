@@ -21,8 +21,14 @@ class CompraController extends Controller
      */
     public function index()
     {
-        $arqueoAbierto = Arqueo::whereNull('fecha_cierre')->first();
-        $compras = Compra::with('detalles')->get();
+        $arqueoAbierto = Arqueo::whereNull('fecha_cierre')
+        ->where('empresa_id', Auth::user()->empresa_id)
+        ->first();
+
+        $compras = Compra::with('detalles')
+        ->where('empresa_id', Auth::user()->empresa_id)
+        ->get();
+
         return view('admin.compras.index', compact('compras', 'arqueoAbierto'));
     }
 
@@ -61,7 +67,9 @@ class CompraController extends Controller
         $compra->save();
 
         /*Registrar en el arqueo*/
-        $arqueo_id = Arqueo::whereNull('fecha_cierre')->first();
+        $arqueo_id = Arqueo::whereNull('fecha_cierre')
+        ->where('empresa_id', Auth::user()->empresa_id)
+        ->first();
         $movimiento = new MovimientoCaja();
         
         $movimiento->tipo = "EGRESO";
@@ -114,8 +122,8 @@ class CompraController extends Controller
     public function edit($id)
     {
         $compra = Compra::with('detalles', 'proveedor')->findOrFail($id);
-        $proveedores = Proveedor::all();
-        $productos = Producto::all();
+        $proveedores = Proveedor::where('empresa_id', Auth::user()->empresa_id)->get();
+        $productos = Producto::where('empresa_id', Auth::user()->empresa_id)->get();
         
         return view('admin.compras.edit', compact('compra','proveedores','productos'));
     }
@@ -174,7 +182,7 @@ class CompraController extends Controller
 
         $empresa = Empresa::where('id', Auth::user()->empresa_id)->first();
 
-        $compras = Compra::all();
+        $compras = Compra::where('empresa_id', Auth::user()->empresa_id)->get();
 
         $pdf = PDF::loadView('admin.compras.reporte', compact('empresa', 'compras'));
         return $pdf->stream();

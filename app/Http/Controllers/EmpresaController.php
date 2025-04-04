@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class EmpresaController extends Controller
 {
@@ -73,7 +75,6 @@ class EmpresaController extends Controller
 
         //Creo una nueva instanciación del modelo Empresas
         $empresa = new Empresa();
-
         $empresa->pais = $request->pais;
         $empresa->nombre_empresa = $request->nombre_empresa;
         $empresa->tipo_empresa = $request->tipo_empresa;
@@ -88,7 +89,6 @@ class EmpresaController extends Controller
         $empresa->departamento = $request->departamento;
         $empresa->codigo_postal = $request->codigo_postal;
         $empresa->logo = $request->file('logo')->store('images', 'public');
-
         $empresa->save();
 
         //Código para que al momento de registrar una empresa se registre de forma predeterminada un usuario
@@ -97,11 +97,20 @@ class EmpresaController extends Controller
         $usuario->email = $request->correo;
         $usuario->password = Hash::make($request['nit']);
         $usuario->empresa_id = $empresa->id;
-
         $usuario->save();
 
-        $usuario->assignRole('ADMINISTRADOR');
+        $rol = new Role();
+        $rol->name = "ADMINISTRADOR";
+        $rol->empresa_id = $empresa->id;
+        $rol->save();
+        
+        $usuario->assignRole($rol->id);
 
+        //Código para que al Administrador se le asignen de forma automática todos los permisos
+        $role = Role::find($rol->id); //Busca el rol con el último id registrado (Administrador)
+        $todos_los_permisos = Permission::pluck('id')->toArray(); //Traemos dentro de un array los id's
+        $role->permissions()->sync($todos_los_permisos); //Sincronisamos todos los permisos en el rol con el id 1 (Administrador)
+        
         /*Con esta línea de código lo que hago es que al momento de registrar la empresa con el usuario por defecto no vuelva al login sino que automáticamente
         ingrese al panel principal ya logeado*/
         Auth::login($usuario);
@@ -197,4 +206,5 @@ class EmpresaController extends Controller
     {
         //
     }
+
 }

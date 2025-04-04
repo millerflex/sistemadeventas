@@ -17,14 +17,19 @@ use Nnjeim\World\Models\Currency;
 use NumberToWords\NumberToWords;
 use NumberFormatter;
 
+
 class VentaController extends Controller
 {
 
 
     public function index()
     {
-        $arqueoAbierto = Arqueo::whereNull('fecha_cierre')->first();
-        $ventas = Venta::with('detallesVenta', 'cliente')->get();
+        $arqueoAbierto = Arqueo::whereNull('fecha_cierre')
+        ->where('empresa_id', Auth::user()->empresa_id)
+        ->first();
+        $ventas = Venta::with('detallesVenta', 'cliente')
+        ->where('empresa_id', Auth::user()->empresa_id)
+        ->get();
         return view('admin.ventas.index', compact('ventas', 'arqueoAbierto'));
     }
 
@@ -82,7 +87,9 @@ class VentaController extends Controller
         $venta->save();
 
         /*Registrar en el arqueo*/
-        $arqueo_id = Arqueo::whereNull('fecha_cierre')->first();
+        $arqueo_id = Arqueo::whereNull('fecha_cierre')
+        ->where('empresa_id', Auth::user()->empresa_id)
+        ->first();
         $movimiento = new MovimientoCaja();
         
         $movimiento->tipo = "INGRESO";
@@ -97,7 +104,9 @@ class VentaController extends Controller
 
         foreach($tmp_ventas as $tmp_venta){
 
-            $producto = Producto::where('id', $tmp_venta->producto->id)->first();
+            $producto = Producto::where('id', $tmp_venta->producto->id)
+            ->where('empresa_id', Auth::user()->empresa_id)
+            ->first();
 
             $detalle_venta = new DetalleVenta();
             $detalle_venta->cantidad = $tmp_venta->cantidad;
@@ -159,8 +168,8 @@ class VentaController extends Controller
      */
     public function edit($id)
     {
-        $productos = Producto::all();
-        $clientes = Cliente::all();
+        $productos = Producto::where('empresa_id', Auth::user()->empresa_id)->get();
+        $clientes = Cliente::where('empresa_id', Auth::user()->empresa_id)->get();
         $venta = Venta::with('detallesVenta', 'cliente')->findOrFail($id);
         return view('admin.ventas.edit', compact('venta', 'productos', 'clientes'));
     }
@@ -216,7 +225,9 @@ class VentaController extends Controller
 
         $empresa = Empresa::where('id', Auth::user()->empresa_id)->first();
 
-        $ventas = Venta::with('Cliente')->get();
+        $ventas = Venta::with('Cliente')
+        ->where('empresa_id', Auth::user()->empresa_id)
+        ->get();
 
         $pdf = PDF::loadView('admin.ventas.reporte', compact('empresa', 'ventas'));
         return $pdf->stream();
