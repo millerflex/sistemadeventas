@@ -51,15 +51,22 @@
                                                     <div class="form-group">
                                                         <div style="height: 32px"></div>
 
-                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#productoModal">
-                                                            <i class="bi bi-search"></i>
+                                                        <button type="button"
+                                                                class="btn btn-primary w-md-auto mb-2 mb-md-0 w-100 "
+                                                                data-toggle="modal"
+                                                                data-target="#productoModal">
+                                                                <i class="bi bi-search"></i>
+                                                        </button>
+
+                                                        <button id="btn-agregar" type="button" class="btn btn-warning  w-100 d-block d-md-none" onclick="agregarAlCarrito()">
+                                                            <i class="bi bi-cart-plus"></i>
                                                         </button>
 
                                                         <!---Modal para la búsqueda de productos--->
                                                         
                                                         <!-- Modal -->
                                                         <div class="modal fade" id="productoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog modal-xl">
+                                                            <div class="modal-dialog modal-xl" style="max-width: 100%">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title" id="exampleModalLabel">Listado de productos</h5>
@@ -68,7 +75,7 @@
                                                                         </button>
                                                                     </div>
                                                                         <div class="modal-body">
-                                                                            <table id="table_products" class="table table-striped table-hover table-sm">
+                                                                            <table id="table_products" class="table table-striped table-hover table-sm dt-responsive nowrap" style="width: 100%">
                                                                                 <thead class="thead-light">
                                                                                     <tr>
                                                                                         <th scope="col" style="text-align: center">Nro</th>
@@ -119,14 +126,14 @@
                                                         </div>
                                                         <!---Modal para la búsqueda de productos--->
 
-                                                        <a href="{{ url('/admin/productos/create') }}" type="button" class="btn btn-success"><i class="bi bi-plus-circle"></i></a>
+                                                        <a href="{{ url('/admin/productos/create') }}" type="button" class="btn btn-success w-md-auto mt-2 mb-md-0 w-100"><i class="bi bi-plus-circle"></i></a>
                                                     </div>
                                                 </div>
 
                                             </div>
                                             <br>
                                             <div class="row">
-                                                <table class="table table-striped table-sm table-bordered table-group-divider table-hover">
+                                                <table class="table table-striped table-sm table-bordered table-group-divider table-hover dt-responsive nowrap" style="width: 100%">
                                                     <thead class="table-primary">
                                                         <tr style="text-align: center">
                                                             <th>Nro</th>
@@ -195,7 +202,7 @@
                                                                 </button>
                                                             </div>
                                                                 <div class="modal-body">
-                                                                    <table id="table_clientes" class="table table-striped table-hover table-sm">
+                                                                    <table id="table_clientes" class="table table-striped table-hover table-sm dt-responsive nowrap" style="width: 100%">
                                                                         <thead class="thead-light">
                                                                             <tr>
                                                                                 <th scope="col" style="text-align: center">Nro</th>
@@ -378,6 +385,53 @@
 @section('js')
     
         <script>
+
+        //Función para agregar productos al carrito pero con el botón agregar que va a aparecer cuando el sistema esté en móvil
+            function agregarAlCarrito(){
+
+                    var codigo = $('#codigo').val()
+                    var cantidad = $('#cantidad').val()
+                    var id_venta = '{{ $venta->id }}'
+            
+                    if(codigo.length > 0){
+                        $.ajax({
+                            url: "{{ route('admin.detalle.ventas') }}",
+                            method: 'POST',
+                            data:{
+                                _token:'{{ csrf_token() }}',
+                                codigo: codigo,
+                                cantidad: cantidad,
+                                id_venta: id_venta
+                            },
+                            success:function(response){
+                                if(response.success){
+                                    Swal.fire({
+                                    position: "top-end",
+                                    icon: "success",
+                                    title: "El producto se agregó correctamente",
+                                    showConfirmButton: false,
+                                    timer: 4000
+                                    });
+
+                                    location.reload(); //La página se va a refrescar automáticamente al registrarse el producto
+
+                                }else{
+                                    Swal.fire({
+                                    position: "top-end",
+                                    icon: "error",
+                                    title: "Producto no encontrado en la base de datos",
+                                    showConfirmButton: false,
+                                    timer: 4000
+                                    });
+                                }
+                            },
+
+                            error:function(error){
+                                alert (error);
+                            }
+                        })
+                    }
+            }    
             
         //Script para registrar a un cliente cuando hace una compra por primera vez desde el formulario de ventas
         function guardar_cliente(){
@@ -557,7 +611,20 @@
         </script>
 
 <script>
+
+    //Script para que la tabla productos que se encuentra dentro del modal sea responsiva
+    $('#productoModal').on('shown.bs.modal', function () {
+        $('#table_products').DataTable().columns.adjust().responsive.recalc();
+    });
+
+    //Script para que la tabla proveedores que se encuentra dentro del modal sea responsiva
+    $('#clienteModal').on('shown.bs.modal', function () {
+        $('#table_clientes').DataTable().columns.adjust().responsive.recalc();
+    });
+
     $('#table_products').DataTable({
+                            "responsive": true,
+                            "autoWidth": false,
                         "pageLength": 5,
                                 "language": {
                                     "emptyTable": "No hay información",
@@ -581,6 +648,8 @@
                     })
 
                     $('#table_clientes').DataTable({
+                            "responsive": true,
+                            "autoWidth": false,
                         "pageLength": 5,
                                 "language": {
                                     "emptyTable": "No hay información",

@@ -34,7 +34,7 @@
                             <!--Script para previsualizar la imagen a cargar en la base de datos-->
                             <center>
                                 <output style="padding= 10px" id="list">
-                                    <img src="{{ asset('storage/'.$empresa->logo) }}" width="80%" alt="logo">
+                                    <img src="{{ asset('storage/images/'.$empresa->logo) }}" width="80%" alt="logo">
                                 </output>
                             </center>
                             <br>

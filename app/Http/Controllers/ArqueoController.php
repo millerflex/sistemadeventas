@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Empresa;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\File;
 
 class ArqueoController extends Controller
 {
@@ -179,6 +180,20 @@ class ArqueoController extends Controller
             $arqueo->total_ingresos = $arqueo->movimientos->where('tipo', 'INGRESO')->sum('monto');
             $arqueo->total_egresos = $arqueo->movimientos->where('tipo', 'EGRESO')->sum('monto');
         }
+
+        // Obtener la ruta f�sica completa del logo
+    	$logoPath = $_SERVER['DOCUMENT_ROOT'] . '/storage/' . $empresa->logo;
+    
+    	// Verificar si el archivo existe
+    	if (File::exists($logoPath)) {
+        $logoBase64 = 'data:image/' . 
+                    pathinfo($logoPath, PATHINFO_EXTENSION) . 
+                    ';base64,' . 
+                    base64_encode(file_get_contents($logoPath));
+    	} else {
+        // Logo alternativo o vac�o si no existe
+        $logoBase64 = '';
+    	}
 
         $pdf = PDF::loadView('admin.arqueos.reporte', compact('empresa', 'arqueos'))
                             ->setPaper('letter', 'LandScape');      

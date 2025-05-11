@@ -15,7 +15,7 @@
                         <!-- /.card-tools -->
 
                         <div class="card-tools">
-                            
+                            <a href="{{ url('/admin/permisos/create') }}" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle"></i> Crear Permiso</a>
                         </div>
 
                     </div>
@@ -28,6 +28,7 @@
                                 <tr>
                                     <th scope="col" style="text-align: center">Nro</th>
                                     <th scope="col" style="text-align: center">Nombre del Permiso</th>
+                                    <th scope="col" style="text-align: center">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -36,6 +37,43 @@
                                     <tr>
                                         <td style="text-align: center">{{ $contador_permisos++ }}</td>
                                         <td style="text-align: center">{{ $permiso->name }}</td>
+                                        <td  style="text-align: center">
+                                            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                                <a href="{{ url('/admin/permisos/show', $permiso->id )}}" class="btn btn-info btn-sm"><i class="bi bi-eye-fill"></i></a>
+                                                    @if ($permiso->name !== "ADMINISTRADOR")
+                                                        <a href="{{ url('/admin/permisos/'. $permiso->id .'/edit') }}" class="btn btn-success btn-sm"><i class="bi bi-pencil-fill"></i></a>
+                                                    @endif
+                                                    @if ($permiso->name !== "ADMINISTRADOR")
+                                                        <form action="{{ url('/admin/permisos', $permiso->id) }}" method="post" onclick="preguntar{{ $permiso->id }} (event)"
+                                                                        id="miFormulario{{ $permiso->id }}">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger btn-sm" style="border-radius: 0px 3px 3px 0px"><i class="bi bi-trash3-fill"></i></button>
+                                                        </form>
+                                                        <script>
+                                                            function preguntar{{ $permiso->id }} (event){
+                                                                event.preventDefault()
+                                                                Swal.fire({
+                                                                title: "¿Estás seguro de eliminar este registro de la base de datos?",
+                                                                icon: "question",
+                                                                showDenyButton: true,
+                                                                showCancelButton: false,
+                                                                confirmButtonText: "Eliminar",
+                                                                denyButtonText: `No eliminar`
+                                                                }).then((result) => {
+                                                                /* Read more about isConfirmed, isDenied below */
+                                                                if (result.isConfirmed) {
+                                                                    var form = $('#miFormulario{{ $permiso->id }}')
+                                                                    form.submit()
+                                                                }
+                                                                });
+                                                            }
+                                                            
+                                                        </script>
+                                                    @endif
+
+                                            </div>
+                                        </td>
                                     </tr>
                                 @endforeach
                                 

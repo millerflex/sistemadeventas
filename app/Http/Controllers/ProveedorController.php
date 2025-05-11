@@ -7,6 +7,7 @@ use App\Models\Empresa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\File;
 
 class ProveedorController extends Controller
 {
@@ -130,6 +131,20 @@ class ProveedorController extends Controller
         $empresa = Empresa::where('id', Auth::user()->empresa_id)->first();
 
         $proveedores = Proveedor::where('empresa_id', Auth::user()->empresa_id)->get();
+
+         // Obtener la ruta física completa del logo
+    	$logoPath = $_SERVER['DOCUMENT_ROOT'] . '/storage/' . $empresa->logo;
+    
+    	// Verificar si el archivo existe
+    	if (File::exists($logoPath)) {
+        $logoBase64 = 'data:image/' . 
+                    pathinfo($logoPath, PATHINFO_EXTENSION) . 
+                    ';base64,' . 
+                    base64_encode(file_get_contents($logoPath));
+    	} else {
+        // Logo alternativo o vacío si no existe
+        $logoBase64 = '';
+    	}
 
         $pdf = PDF::loadView('admin.proveedores.reporte', compact('empresa', 'proveedores'))
                     ->setPaper('letter', 'LandScape');

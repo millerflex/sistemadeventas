@@ -13,6 +13,7 @@ use App\Models\Empresa;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class CompraController extends Controller
 {
@@ -183,6 +184,20 @@ class CompraController extends Controller
         $empresa = Empresa::where('id', Auth::user()->empresa_id)->first();
 
         $compras = Compra::where('empresa_id', Auth::user()->empresa_id)->get();
+
+         // Obtener la ruta física completa del logo
+    	$logoPath = $_SERVER['DOCUMENT_ROOT'] . '/storage/' . $empresa->logo;
+    
+    	// Verificar si el archivo existe
+    	if (File::exists($logoPath)) {
+        $logoBase64 = 'data:image/' . 
+                    pathinfo($logoPath, PATHINFO_EXTENSION) . 
+                    ';base64,' . 
+                    base64_encode(file_get_contents($logoPath));
+    	} else {
+        // Logo alternativo o vacío si no existe
+        $logoBase64 = '';
+    	}
 
         $pdf = PDF::loadView('admin.compras.reporte', compact('empresa', 'compras'));
         return $pdf->stream();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DetalleVenta;
 use App\Models\Producto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DetalleVentaController extends Controller
 {

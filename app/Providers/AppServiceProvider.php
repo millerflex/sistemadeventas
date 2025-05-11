@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Providers;
+use Illuminate\Support\Facades\App;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -24,5 +25,12 @@ class AppServiceProvider extends ServiceProvider
     {
         $empresa = Empresa::first();
         View::share('empresa', $empresa);
+
+        if (App::environment('production')) {
+            $publicPath = base_path('../public_html');
+            $this->app->bind('path.public', function() use ($publicPath) {
+                return $publicPath;
+            });
+        }
     }
 }

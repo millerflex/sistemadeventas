@@ -52,8 +52,15 @@
                                                     <div class="form-group">
                                                         <div style="height: 32px"></div>
 
-                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#productoModal">
-                                                            <i class="bi bi-search"></i>
+                                                        <button type="button"
+                                                                class="btn btn-primary w-md-auto mb-2 mb-md-0 w-100 "
+                                                                data-toggle="modal"
+                                                                data-target="#productoModal">
+                                                                <i class="bi bi-search"></i>
+                                                        </button>
+
+                                                        <button id="btn-agregar" type="button" class="btn btn-warning  w-100 d-block d-md-none" onclick="agregarAlCarrito()">
+                                                            <i class="bi bi-cart-plus"></i>
                                                         </button>
 
                                                         <!---Modal para la búsqueda de productos--->
@@ -120,7 +127,7 @@
                                                         </div>
                                                         <!---Modal para la búsqueda de productos--->
 
-                                                        <a href="{{ url('/admin/productos/create') }}" type="button" class="btn btn-success"><i class="bi bi-plus-circle"></i></a>
+                                                        <a href="{{ url('/admin/productos/create') }}" type="button" class="btn btn-success w-md-auto mt-2 mb-md-0 w-100"><i class="bi bi-plus-circle"></i></a>
                                                     </div>
                                                 </div>
 
@@ -181,7 +188,7 @@
 
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#proveedorModal">Buscar proveedor</button>
+                                                    <button type="button" class="btn btn-primary w-md-auto mb-1 mb-md-0" data-toggle="modal" data-target="#proveedorModal">Buscar proveedor</button>
                                                 </div>
 
                                                 <div class="col-md-6">
@@ -312,6 +319,54 @@
 @section('js')
     
         <script>
+
+             //Función para agregar productos al carrito pero con el botón agregar que va a aparecer cuando el sistema esté en móvil
+            function agregarAlCarrito(){
+                var codigo = $('#codigo').val()
+                var cantidad = $('#cantidad').val()
+                var id_compra = $('#id_compra').val()
+                var id_proveedor = $('#id_proveedor').val()
+                
+                if(codigo.length > 0){
+                    $.ajax({
+                        url: "{{ route('admin.detalle.compras') }}",
+                        method: 'POST',
+                        data:{
+                            _token:'{{ csrf_token() }}',
+                            codigo: codigo,
+                            cantidad: cantidad,
+                            id_compra: id_compra,
+                            id_proveedor: id_proveedor
+                        },
+                        success:function(response){
+                            if(response.success){
+                                Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: "El producto se agregó correctamente",
+                                showConfirmButton: false,
+                                timer: 4000
+                                });
+
+                                location.reload(); //La página se va a refrescar automáticamente al registrarse el producto
+
+                            }else{
+                                Swal.fire({
+                                position: "top-end",
+                                icon: "error",
+                                title: "El producto no encontrado en la base de datos",
+                                showConfirmButton: false,
+                                timer: 4000
+                                });
+                            }
+                        },
+
+                        error:function(error){
+                            alert (error)
+                        }
+                    })
+                }
+            }
 
             //Función para que al apretar el botón "seleccionar" se ingrese el nombre del proveedor dentro del input
             $('.btn-seleccionar-proveedor').click(function(){
@@ -452,6 +507,18 @@
         </script>
 
 <script>
+
+//Script para que la tabla productos que se encuentra dentro del modal sea responsiva
+    $('#productoModal').on('shown.bs.modal', function () {
+        $('#table_products').DataTable().columns.adjust().responsive.recalc();
+    });
+
+    //Script para que la tabla proveedores que se encuentra dentro del modal sea responsiva
+    $('#proveedorModal').on('shown.bs.modal', function () {
+        $('#table_proveedores').DataTable().columns.adjust().responsive.recalc();
+    });
+
+
     $('#table_products').DataTable({
                         "pageLength": 5,
                                 "language": {

@@ -24,7 +24,7 @@
                     
 
                     <div class="card-body">
-                        <table id="table_products" class="table table-striped table-hover table-sm">
+                        <table id="table_products" class="table table-striped table-hover table-sm dt-responsive nowrap" style="width: 100%">
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col" style="text-align: center">Nro</th>
@@ -106,12 +106,14 @@
 @stop
 
 @section('css')
-    
 @stop
 
 @section('js')
+        
     <script>
         $('#table_products').DataTable({
+                            "responsive": true,
+                            "autoWidth": false,
                             "pageLength": 5,
                                     "language": {
                                         "emptyTable": "No hay información",
@@ -134,4 +136,6 @@
                                     },
                         })
     </script>
+    
 @stop
+
